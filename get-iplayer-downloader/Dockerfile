@@ -11,7 +11,6 @@ RUN apk add --no-cache \
     perl-mojolicious \
     perl-xml-libxml \
     ffmpeg \
-    atomicparsley \
     wget \
     curl
 
