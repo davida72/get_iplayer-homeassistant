@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.7] - 2025-11-04
+
+### Fixed
+- Fixed download_command to properly search for Newsround specifically
+- Program name now in quotes and placed first in command
+- Previously was downloading first program from entire cache instead of first Newsround
+- Changed from `--get 1 --type=tv --channel=CBBC Newsround` to `'Newsround' --channel=CBBC --type=tv --get 1`
+
 ## [1.0.6] - 2025-11-04
 
 ### Fixed
