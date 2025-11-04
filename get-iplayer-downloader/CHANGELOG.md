@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.14] - 2025-11-04
+
+### Fixed
+- **Critical fix**: Added `--limit-matches 1` to prevent processing all matching episodes
+- Previously `--get` would attempt to download all 30+ matching episodes (only first succeeded, rest failed)
+- Now correctly limits search results to just 1 episode (the latest) before downloading
+- Dramatically reduces execution time and eliminates unnecessary warnings
+
 ## [1.0.13] - 2025-11-04
 
 ### Fixed
