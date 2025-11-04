@@ -33,23 +33,51 @@ def load_options():
         logger.error(f"Failed to load options: {e}")
         sys.exit(1)
 
-def run_command(command, shell=True):
+def run_command(command, shell=True, stream_output=False):
     """Execute a shell command and return output"""
     try:
         logger.info(f"Executing: {command}")
-        result = subprocess.run(
-            command,
-            shell=shell,
-            capture_output=True,
-            text=True,
-            check=True
-        )
-        logger.info(f"Output: {result.stdout}")
-        return result.stdout, result.stderr
+
+        if stream_output:
+            # Stream output in real-time for long-running commands
+            process = subprocess.Popen(
+                command,
+                shell=shell,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1
+            )
+
+            output_lines = []
+            for line in process.stdout:
+                line = line.rstrip()
+                if line:
+                    logger.info(line)
+                    output_lines.append(line)
+
+            process.wait()
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError(process.returncode, command)
+
+            return '\n'.join(output_lines), ''
+        else:
+            # Capture all output at once
+            result = subprocess.run(
+                command,
+                shell=shell,
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            logger.info(f"Output: {result.stdout}")
+            return result.stdout, result.stderr
     except subprocess.CalledProcessError as e:
         logger.error(f"Command failed: {e}")
-        logger.error(f"STDOUT: {e.stdout}")
-        logger.error(f"STDERR: {e.stderr}")
+        if hasattr(e, 'stdout') and e.stdout:
+            logger.error(f"STDOUT: {e.stdout}")
+        if hasattr(e, 'stderr') and e.stderr:
+            logger.error(f"STDERR: {e.stderr}")
         raise
 
 def search_episodes(search_command):
@@ -61,7 +89,7 @@ def search_episodes(search_command):
 def download_episode(download_command):
     """Download an episode using get_iplayer"""
     logger.info("Downloading episode...")
-    stdout, stderr = run_command(download_command)
+    stdout, stderr = run_command(download_command, stream_output=True)
     return stdout
 
 def convert_with_ffmpeg(input_file, output_file, ffmpeg_command):
@@ -74,7 +102,7 @@ def convert_with_ffmpeg(input_file, output_file, ffmpeg_command):
         output_file=output_file
     )
 
-    stdout, stderr = run_command(command)
+    stdout, stderr = run_command(command, stream_output=True)
     return output_file
 
 def copy_to_media(source_path, media_folder):

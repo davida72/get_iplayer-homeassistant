@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2025-11-04
+
+### Fixed
+- Stream output in real-time for download and conversion commands
+- Users can now see progress instead of addon appearing to hang
+- Added stream_output parameter to run_command function
+- Download progress and ffmpeg conversion progress now visible in logs
+
 ## [1.0.4] - 2025-11-04
 
 ### Fixed
