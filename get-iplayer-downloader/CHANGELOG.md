@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2025-11-03
+
+### Fixed
+- Updated default download_command to actually work out of the box
+- Changed from placeholder `{episode_index}` to `--get 1` with search criteria
+- Now downloads the latest Newsround episode by default without configuration
+
 ## [1.0.1] - 2025-11-03
 
 ### Fixed
