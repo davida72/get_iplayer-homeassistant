@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.12] - 2025-11-04
+
+### Fixed
+- **Critical fix**: Changed `--reverse` to `--sortreverse` - correct get_iplayer syntax
+- `--reverse` is not a valid get_iplayer option and was causing downloads to fail
+- Changed `--sort=firstbcast` to `--sort=available` for more reliable sorting
+- Downloads now work correctly with proper sorting to get latest episode
+
 ## [1.0.11] - 2025-11-04
 
 ### Changed
