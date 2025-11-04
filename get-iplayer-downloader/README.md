@@ -58,14 +58,23 @@ Delete Original After Conversion: false
 
 ### Configuration Options
 
-| Option | Type | Description | Default |
-|--------|------|-------------|---------|
-| Download Command | string | The get_iplayer command to download your chosen programme | `get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --sort=firstbcast --reverse --get 1 --audio-only --output=/downloads --force --overwrite` |
-| Convert Audio | boolean | Convert the downloaded file using ffmpeg | `true` |
-| Conversion Command | string | The ffmpeg command for audio conversion | `ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}` |
-| Output Folder | string | Where to save the final file in Home Assistant | `/media/downloads` |
-| Final Filename (optional) | string | Rename the file before copying (e.g., `newsround_latest.mp3`). Leave empty to keep original filename. Extension is optional - will use current file extension if not specified. | `""` (empty) |
-| Delete Original After Conversion | boolean | Automatically delete the original file after conversion to save space | `false` |
+| Option | Type | Description |
+|--------|------|-------------|
+| **Download Command** | string | The get_iplayer command to download your programme |
+| **Convert Audio** | boolean | Enable ffmpeg audio conversion (true/false) |
+| **Conversion Command** | string | The ffmpeg command for conversion |
+| **Output Folder** | string | Where to save files in Home Assistant |
+| **Final Filename (optional)** | string | Custom filename (leave empty to keep original) |
+| **Delete Original After Conversion** | boolean | Auto-delete original after conversion (true/false) |
+
+**Option Details:**
+
+- **Download Command**: Default is `get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --sort=firstbcast --reverse --get 1 --audio-only --output=/downloads --force --overwrite`
+- **Convert Audio**: Default is `true` (enabled)
+- **Conversion Command**: Default is `ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}`
+- **Output Folder**: Default is `/media/downloads`
+- **Final Filename (optional)**: Optional custom filename like `newsround_latest.mp3`. Leave empty to keep the original downloaded filename. Extension is optional - will use current file extension if not specified.
+- **Delete Original After Conversion**: Default is `false` (disabled)
 
 ### Command Placeholders
 

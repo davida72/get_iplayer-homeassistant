@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.11] - 2025-11-04
+
+### Changed
+- Improved documentation table formatting for better readability in dark mode
+- Simplified Configuration Options table with shorter descriptions
+- Moved detailed defaults and descriptions to "Option Details" section below table
+- Made option names bold for better visibility
+
 ## [1.0.10] - 2025-11-04
 
 ### Fixed
