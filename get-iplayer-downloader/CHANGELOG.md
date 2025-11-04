@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2025-11-04
+
+### Fixed
+- Disabled search_command by default (was causing addon to hang)
+- Search step can take several minutes as it indexes all BBC programs
+- Addon now goes straight to download for faster execution
+- Users can still enable search_command if needed for reference
+
 ## [1.0.3] - 2025-11-03
 
 ### Added
