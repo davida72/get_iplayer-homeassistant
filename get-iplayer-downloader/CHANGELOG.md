@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.8] - 2025-11-04
+
+### Fixed
+- Added `--sort=available --reverse` to download the most recent available episode
+- Prevents trying to download expired episodes (BBC typically keeps shows for 30 days)
+- Now gets the newest episode first instead of oldest
+- Fixes issue where older unavailable episodes were being attempted first
+
 ## [1.0.7] - 2025-11-04
 
 ### Fixed

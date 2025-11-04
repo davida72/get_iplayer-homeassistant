@@ -42,7 +42,7 @@ The addon comes with sensible defaults for downloading the latest BBC Newsround 
 
 ```yaml
 search_command: ""
-download_command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --get 1 --audio-only --output=/downloads --force --overwrite"
+download_command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --sort=available --reverse --get 1 --audio-only --output=/downloads --force --overwrite"
 enable_ffmpeg: true
 ffmpeg_command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
 media_folder: "/media/downloads"
@@ -51,7 +51,9 @@ auto_delete_original: false
 
 **Notes:**
 - The program name must be in quotes and placed first for proper filtering
-- `--get 1` downloads the first matching episode from search results
+- `--sort=available --reverse` ensures the newest available episode is downloaded first
+- BBC typically keeps shows available for 30 days, so older episodes may not be available
+- `--get 1` downloads the first matching episode from sorted search results
 - `search_command` is empty by default (searching can take several minutes as it indexes all BBC programs)
 - You can customize commands to download specific episodes or different programs
 
@@ -60,7 +62,7 @@ auto_delete_original: false
 | Option | Type | Description | Default |
 |--------|------|-------------|---------|
 | `search_command` | string | Command to search for episodes (optional, leave empty for faster execution) | `""` (empty) |
-| `download_command` | string | Command to download episodes | `get_iplayer 'Newsround' --channel=CBBC --type=tv --get 1 --audio-only --output=/downloads --force --overwrite` |
+| `download_command` | string | Command to download episodes | `get_iplayer 'Newsround' --channel=CBBC --type=tv --sort=available --reverse --get 1 --audio-only --output=/downloads --force --overwrite` |
 | `enable_ffmpeg` | boolean | Enable ffmpeg conversion | `true` |
 | `ffmpeg_command` | string | FFmpeg conversion command | `ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}` |
 | `media_folder` | string | Destination folder for files | `/media/downloads` |
@@ -79,7 +81,7 @@ The following placeholders are automatically replaced by the addon:
 
 ```yaml
 search_command: ""
-download_command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --get 1 --audio-only --output=/downloads --force --overwrite"
+download_command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --sort=available --reverse --get 1 --audio-only --output=/downloads --force --overwrite"
 enable_ffmpeg: true
 ffmpeg_command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
 media_folder: "/media/newsround"
@@ -90,7 +92,7 @@ auto_delete_original: true
 
 ```yaml
 search_command: ""
-download_command: "get_iplayer 'Doctor Who' --type=tv --get 1 --output=/downloads --force --overwrite"
+download_command: "get_iplayer 'Doctor Who' --type=tv --sort=available --reverse --get 1 --output=/downloads --force --overwrite"
 enable_ffmpeg: false
 media_folder: "/media/tv_shows"
 auto_delete_original: false
@@ -100,7 +102,7 @@ auto_delete_original: false
 
 ```yaml
 search_command: ""
-download_command: "get_iplayer 'Today Programme' --type=radio --get 1 --output=/downloads --force --overwrite"
+download_command: "get_iplayer 'Today Programme' --type=radio --sort=available --reverse --get 1 --output=/downloads --force --overwrite"
 enable_ffmpeg: true
 ffmpeg_command: "ffmpeg -i {input_file} -acodec mp3 -ab 192k {output_file}"
 media_folder: "/media/radio"
