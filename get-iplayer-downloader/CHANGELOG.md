@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2025-11-03
+
+### Added
+- Added custom logo/icon for the addon
+
 ## [1.0.2] - 2025-11-03
 
 ### Fixed
