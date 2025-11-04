@@ -160,7 +160,7 @@ def main():
     enable_ffmpeg = options.get('Convert Audio', True)
     ffmpeg_command = options.get('Conversion Command')
     media_folder = options.get('Output Folder', '/media/downloads')
-    final_filename = options.get('Final Filename', '').strip()
+    final_filename = options.get('Final Filename (optional)', '').strip()
     auto_delete_original = options.get('Delete Original After Conversion', False)
 
     try:

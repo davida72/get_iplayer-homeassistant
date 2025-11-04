@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.10] - 2025-11-04
+
+### Fixed
+- **Always get the latest episode** - Added `--sort=firstbcast --reverse` to guarantee newest episode
+- Previously `--get 1` would get first result which might not be the newest
+- Now sorts by first broadcast date in reverse order before getting first result
+
+### Changed
+- Renamed "Final Filename" to "Final Filename (optional)" to make it clearer it's not required
+- Updated all documentation and examples with sorting flags
+
 ## [1.0.9] - 2025-11-04
 
 ### Added

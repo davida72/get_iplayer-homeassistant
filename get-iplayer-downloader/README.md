@@ -41,29 +41,30 @@ Download BBC iPlayer shows using get_iplayer, optionally convert with ffmpeg, an
 The addon comes with sensible defaults for downloading the latest BBC Newsround episode. Here's the default configuration:
 
 ```yaml
-Download Command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --get 1 --audio-only --output=/downloads --force --overwrite"
+Download Command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --sort=firstbcast --reverse --get 1 --audio-only --output=/downloads --force --overwrite"
 Convert Audio: true
 Conversion Command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
 Output Folder: "/media/downloads"
-Final Filename: ""
+Final Filename (optional): ""
 Delete Original After Conversion: false
 ```
 
 **Notes:**
 - The program name must be in quotes and placed first for proper filtering
 - `--since 168` only caches programmes from the last 7 days (168 hours) - **much faster than full cache!**
-- `--get 1` downloads the first matching episode (the most recent)
+- `--sort=firstbcast --reverse` ensures you always get the newest episode first
+- `--get 1` downloads the first matching episode (which is now guaranteed to be the latest)
 - You can customize commands to download specific episodes or different programs
 
 ### Configuration Options
 
 | Option | Type | Description | Default |
 |--------|------|-------------|---------|
-| Download Command | string | The get_iplayer command to download your chosen programme | `get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --get 1 --audio-only --output=/downloads --force --overwrite` |
+| Download Command | string | The get_iplayer command to download your chosen programme | `get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --sort=firstbcast --reverse --get 1 --audio-only --output=/downloads --force --overwrite` |
 | Convert Audio | boolean | Convert the downloaded file using ffmpeg | `true` |
 | Conversion Command | string | The ffmpeg command for audio conversion | `ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}` |
 | Output Folder | string | Where to save the final file in Home Assistant | `/media/downloads` |
-| Final Filename | string | Optional: rename the file before copying (e.g., `newsround_latest.mp3`). Leave empty to keep original filename. Extension is optional - will use current file extension if not specified. | `""` (empty) |
+| Final Filename (optional) | string | Rename the file before copying (e.g., `newsround_latest.mp3`). Leave empty to keep original filename. Extension is optional - will use current file extension if not specified. | `""` (empty) |
 | Delete Original After Conversion | boolean | Automatically delete the original file after conversion to save space | `false` |
 
 ### Command Placeholders
@@ -78,11 +79,11 @@ The following placeholders are automatically replaced by the addon:
 ### Example 1: Download Latest Newsround with Fixed Filename (Perfect for daily automation!)
 
 ```yaml
-Download Command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --get 1 --audio-only --output=/downloads --force --overwrite"
+Download Command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --sort=firstbcast --reverse --get 1 --audio-only --output=/downloads --force --overwrite"
 Convert Audio: true
 Conversion Command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
 Output Folder: "/media/newsround"
-Final Filename: "newsround_latest.mp3"
+Final Filename (optional): "newsround_latest.mp3"
 Delete Original After Conversion: true
 ```
 
@@ -91,21 +92,21 @@ This will always save the file as `newsround_latest.mp3`, so you can play the sa
 ### Example 2: Download Latest Doctor Who Episode (Full Video, No Conversion)
 
 ```yaml
-Download Command: "get_iplayer 'Doctor Who' --type=tv --since 720 --get 1 --output=/downloads --force --overwrite"
+Download Command: "get_iplayer 'Doctor Who' --type=tv --since 720 --sort=firstbcast --reverse --get 1 --output=/downloads --force --overwrite"
 Convert Audio: false
 Output Folder: "/media/tv_shows"
-Final Filename: ""
+Final Filename (optional): ""
 Delete Original After Conversion: false
 ```
 
 ### Example 3: Download Latest Today Programme (Radio)
 
 ```yaml
-Download Command: "get_iplayer 'Today Programme' --type=radio --since 168 --get 1 --output=/downloads --force --overwrite"
+Download Command: "get_iplayer 'Today Programme' --type=radio --since 168 --sort=firstbcast --reverse --get 1 --output=/downloads --force --overwrite"
 Convert Audio: true
 Conversion Command: "ffmpeg -i {input_file} -acodec mp3 -ab 192k {output_file}"
 Output Folder: "/media/radio"
-Final Filename: ""
+Final Filename (optional): ""
 Delete Original After Conversion: true
 ```
 
@@ -115,7 +116,7 @@ Delete Original After Conversion: true
 Download Command: "get_iplayer --pid=b006qykl --output=/downloads --force --overwrite"
 Convert Audio: false
 Output Folder: "/media/iplayer"
-Final Filename: ""
+Final Filename (optional): ""
 Delete Original After Conversion: false
 ```
 
