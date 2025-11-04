@@ -156,7 +156,55 @@ This will show a list of available episodes with their index numbers.
 
 ## Automation
 
-You can automate downloads using Home Assistant automations:
+You can automate downloads using Home Assistant automations. Here's a real-world example that downloads Newsround, waits for completion, then plays it as a morning alarm:
+
+```yaml
+automation:
+  - alias: "Oli's Newsround Alarm"
+    description: "Download latest Newsround and play on speaker"
+    triggers:
+      - at: "06:30:00"
+        id: early
+        trigger: time
+      - at: "06:45:00"
+        id: late
+        trigger: time
+    conditions:
+      - condition: template
+        value_template: |-
+          {% set day = now().weekday() %}
+          {% if trigger.id == 'early' %}
+            {{ day in [0, 2] }}
+          {% else %}
+            {{ day in [1, 3, 4] }}
+          {% endif %}
+    actions:
+      - data:
+          addon: caf59e4b_get-iplayer-downloader
+        action: hassio.addon_start
+      - delay:
+          minutes: 3
+      - target:
+          entity_id:
+            - media_player.hall
+        data:
+          media:
+            media_content_id: media-source://media_source/local/downloads/newsround_latest.mp3
+            media_content_type: music
+            metadata: {}
+        action: media_player.play_media
+```
+
+**Notes:**
+- Replace `caf59e4b_get-iplayer-downloader` with your addon's slug (find it in Settings → Add-ons)
+- The 3-minute delay allows time for download and conversion to complete
+- This example plays at 6:30am on Mon/Wed and 6:45am on Tue/Thu/Fri
+- Adjust `media_player.hall` to match your speaker's entity ID
+- Make sure to set `Final Filename (optional)` to `newsround_latest.mp3` in addon config
+
+### Simple Daily Download Example
+
+For a basic daily download without playback:
 
 ```yaml
 automation:
@@ -167,7 +215,7 @@ automation:
     action:
       - service: hassio.addon_start
         data:
-          addon: local_get-iplayer-downloader
+          addon: caf59e4b_get-iplayer-downloader
 ```
 
 ## Troubleshooting

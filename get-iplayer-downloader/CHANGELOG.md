@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.15] - 2025-11-04
+
+### Changed
+- Shortened description to "BBC iPlayer downloader with ffmpeg conversion" for better display in Home Assistant UI
+- Enhanced automation examples with real-world use case showing download, delay, and playback
+- Added detailed notes for automation configuration including addon slug and media player setup
+
 ## [1.0.14] - 2025-11-04
 
 ### Fixed

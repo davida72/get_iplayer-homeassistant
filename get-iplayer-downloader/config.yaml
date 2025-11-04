@@ -1,7 +1,7 @@
 name: "get_iplayer Downloader"
-version: "1.0.14"
+version: "1.0.15"
 slug: get-iplayer-downloader
-description: "Download BBC iPlayer shows using get_iplayer, optionally convert with ffmpeg, and save to media folder"
+description: "BBC iPlayer downloader with ffmpeg conversion"
 arch:
   - aarch64
   - amd64
