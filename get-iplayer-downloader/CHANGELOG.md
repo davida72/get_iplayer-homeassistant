@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.6] - 2025-11-04
+
+### Fixed
+- Handle get_iplayer exit code 29 (success with warnings) properly
+- Addon now continues processing even when AtomicParsley warning occurs
+- Downloads complete successfully despite non-critical warnings
+- Added allow_warning_codes parameter to treat code 29 as success
+
 ## [1.0.5] - 2025-11-04
 
 ### Fixed

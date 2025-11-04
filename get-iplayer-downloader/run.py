@@ -33,8 +33,15 @@ def load_options():
         logger.error(f"Failed to load options: {e}")
         sys.exit(1)
 
-def run_command(command, shell=True, stream_output=False):
-    """Execute a shell command and return output"""
+def run_command(command, shell=True, stream_output=False, allow_warning_codes=False):
+    """Execute a shell command and return output
+
+    Args:
+        command: Command to execute
+        shell: Use shell execution
+        stream_output: Stream output line by line
+        allow_warning_codes: If True, treat get_iplayer warning exit codes (like 29) as success
+    """
     try:
         logger.info(f"Executing: {command}")
 
@@ -57,8 +64,14 @@ def run_command(command, shell=True, stream_output=False):
                     output_lines.append(line)
 
             process.wait()
+
+            # get_iplayer exit codes: 0=success, 29=success with warnings
+            # Only raise error for actual failure codes
             if process.returncode != 0:
-                raise subprocess.CalledProcessError(process.returncode, command)
+                if allow_warning_codes and process.returncode == 29:
+                    logger.warning(f"Command completed with warnings (exit code {process.returncode})")
+                else:
+                    raise subprocess.CalledProcessError(process.returncode, command)
 
             return '\n'.join(output_lines), ''
         else:
@@ -68,12 +81,19 @@ def run_command(command, shell=True, stream_output=False):
                 shell=shell,
                 capture_output=True,
                 text=True,
-                check=True
+                check=False  # Don't auto-raise on non-zero exit
             )
+
+            if result.returncode != 0:
+                if allow_warning_codes and result.returncode == 29:
+                    logger.warning(f"Command completed with warnings (exit code {result.returncode})")
+                else:
+                    raise subprocess.CalledProcessError(result.returncode, command, result.stdout, result.stderr)
+
             logger.info(f"Output: {result.stdout}")
             return result.stdout, result.stderr
     except subprocess.CalledProcessError as e:
-        logger.error(f"Command failed: {e}")
+        logger.error(f"Command failed with exit code {e.returncode}")
         if hasattr(e, 'stdout') and e.stdout:
             logger.error(f"STDOUT: {e.stdout}")
         if hasattr(e, 'stderr') and e.stderr:
@@ -83,13 +103,13 @@ def run_command(command, shell=True, stream_output=False):
 def search_episodes(search_command):
     """Search for episodes using get_iplayer"""
     logger.info("Searching for episodes...")
-    stdout, stderr = run_command(search_command)
+    stdout, stderr = run_command(search_command, allow_warning_codes=True)
     return stdout
 
 def download_episode(download_command):
     """Download an episode using get_iplayer"""
     logger.info("Downloading episode...")
-    stdout, stderr = run_command(download_command, stream_output=True)
+    stdout, stderr = run_command(download_command, stream_output=True, allow_warning_codes=True)
     return stdout
 
 def convert_with_ffmpeg(input_file, output_file, ffmpeg_command):
