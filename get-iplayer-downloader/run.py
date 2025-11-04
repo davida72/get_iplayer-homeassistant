@@ -156,22 +156,16 @@ def main():
     options = load_options()
     logger.info(f"Loaded options: {json.dumps(options, indent=2)}")
 
-    search_command = options.get('search_command')
-    download_command = options.get('download_command')
-    enable_ffmpeg = options.get('enable_ffmpeg', True)
-    ffmpeg_command = options.get('ffmpeg_command')
-    media_folder = options.get('media_folder', '/media/downloads')
-    auto_delete_original = options.get('auto_delete_original', False)
+    download_command = options.get('Download Command')
+    enable_ffmpeg = options.get('Convert Audio', True)
+    ffmpeg_command = options.get('Conversion Command')
+    media_folder = options.get('Output Folder', '/media/downloads')
+    final_filename = options.get('Final Filename', '').strip()
+    auto_delete_original = options.get('Delete Original After Conversion', False)
 
     try:
-        # Step 1: Search for episodes (optional - for user reference)
-        if search_command:
-            logger.info("=== Step 1: Searching for episodes ===")
-            search_output = search_episodes(search_command)
-            logger.info(search_output)
-
-        # Step 2: Download episode
-        logger.info("=== Step 2: Downloading episode ===")
+        # Step 1: Download episode
+        logger.info("=== Step 1: Downloading episode ===")
         if not download_command:
             logger.error("No download command specified!")
             sys.exit(1)
@@ -190,9 +184,9 @@ def main():
         logger.info(f"Downloaded file: {downloaded_file}")
         file_to_copy = downloaded_file
 
-        # Step 3: Convert with ffmpeg (optional)
+        # Step 2: Convert with ffmpeg (optional)
         if enable_ffmpeg and ffmpeg_command:
-            logger.info("=== Step 3: Converting with ffmpeg ===")
+            logger.info("=== Step 2: Converting with ffmpeg ===")
 
             # Determine output filename
             base_name = os.path.splitext(downloaded_file)[0]
@@ -208,7 +202,31 @@ def main():
                 logger.info(f"Deleting original file: {downloaded_file}")
                 os.remove(downloaded_file)
         else:
-            logger.info("=== Step 3: Skipping ffmpeg conversion ===")
+            logger.info("=== Step 2: Skipping ffmpeg conversion ===")
+
+        # Step 3: Rename file if custom filename specified
+        if final_filename:
+            logger.info(f"=== Step 3: Renaming to {final_filename} ===")
+
+            # Get the directory and extension of current file
+            file_dir = os.path.dirname(file_to_copy)
+            _, current_ext = os.path.splitext(file_to_copy)
+
+            # If user didn't include extension, add the current one
+            if not os.path.splitext(final_filename)[1]:
+                final_filename_with_ext = final_filename + current_ext
+            else:
+                final_filename_with_ext = final_filename
+
+            # Build the new full path
+            renamed_file = os.path.join(file_dir, final_filename_with_ext)
+
+            # Rename the file
+            os.rename(file_to_copy, renamed_file)
+            logger.info(f"Renamed {os.path.basename(file_to_copy)} to {final_filename_with_ext}")
+            file_to_copy = renamed_file
+        else:
+            logger.info("=== Step 3: Skipping rename (no custom filename set) ===")
 
         # Step 4: Copy to media folder
         logger.info("=== Step 4: Copying to media folder ===")

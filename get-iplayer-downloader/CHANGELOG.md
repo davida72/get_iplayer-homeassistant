@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.9] - 2025-11-04
+
+### Added
+- **Final Filename option** - specify a custom filename for the output file (e.g., `newsround_latest.mp3`)
+- Perfect for daily automation - always save to the same filename so you can play "the latest" each day
+- Extension is optional - will use the current file extension if not specified
+- Leave empty to keep the original downloaded filename
+
+### Changed
+- **Configuration options now have human-readable names:**
+  - `download_command` → `Download Command`
+  - `enable_ffmpeg` → `Convert Audio`
+  - `ffmpeg_command` → `Conversion Command`
+  - `media_folder` → `Output Folder`
+  - `auto_delete_original` → `Delete Original After Conversion`
+- **Removed `search_command` option** - not needed with `--since` flag
+- Replaced `--sort=available --reverse` with `--since 168` (last 7 days)
+- Much faster execution - only indexes programmes from the last week instead of all 8000+ BBC programmes
+- Simpler command structure
+- First matching result is naturally the most recent with --since
+- Removed unused search step from execution flow
+- Execution now has 4 steps (added rename step between conversion and copy)
+
 ## [1.0.8] - 2025-11-04
 
 ### Fixed

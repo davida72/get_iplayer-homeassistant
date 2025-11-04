@@ -41,32 +41,30 @@ Download BBC iPlayer shows using get_iplayer, optionally convert with ffmpeg, an
 The addon comes with sensible defaults for downloading the latest BBC Newsround episode. Here's the default configuration:
 
 ```yaml
-search_command: ""
-download_command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --sort=available --reverse --get 1 --audio-only --output=/downloads --force --overwrite"
-enable_ffmpeg: true
-ffmpeg_command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
-media_folder: "/media/downloads"
-auto_delete_original: false
+Download Command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --get 1 --audio-only --output=/downloads --force --overwrite"
+Convert Audio: true
+Conversion Command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
+Output Folder: "/media/downloads"
+Final Filename: ""
+Delete Original After Conversion: false
 ```
 
 **Notes:**
 - The program name must be in quotes and placed first for proper filtering
-- `--sort=available --reverse` ensures the newest available episode is downloaded first
-- BBC typically keeps shows available for 30 days, so older episodes may not be available
-- `--get 1` downloads the first matching episode from sorted search results
-- `search_command` is empty by default (searching can take several minutes as it indexes all BBC programs)
+- `--since 168` only caches programmes from the last 7 days (168 hours) - **much faster than full cache!**
+- `--get 1` downloads the first matching episode (the most recent)
 - You can customize commands to download specific episodes or different programs
 
 ### Configuration Options
 
 | Option | Type | Description | Default |
 |--------|------|-------------|---------|
-| `search_command` | string | Command to search for episodes (optional, leave empty for faster execution) | `""` (empty) |
-| `download_command` | string | Command to download episodes | `get_iplayer 'Newsround' --channel=CBBC --type=tv --sort=available --reverse --get 1 --audio-only --output=/downloads --force --overwrite` |
-| `enable_ffmpeg` | boolean | Enable ffmpeg conversion | `true` |
-| `ffmpeg_command` | string | FFmpeg conversion command | `ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}` |
-| `media_folder` | string | Destination folder for files | `/media/downloads` |
-| `auto_delete_original` | boolean | Delete original file after conversion | `false` |
+| Download Command | string | The get_iplayer command to download your chosen programme | `get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --get 1 --audio-only --output=/downloads --force --overwrite` |
+| Convert Audio | boolean | Convert the downloaded file using ffmpeg | `true` |
+| Conversion Command | string | The ffmpeg command for audio conversion | `ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}` |
+| Output Folder | string | Where to save the final file in Home Assistant | `/media/downloads` |
+| Final Filename | string | Optional: rename the file before copying (e.g., `newsround_latest.mp3`). Leave empty to keep original filename. Extension is optional - will use current file extension if not specified. | `""` (empty) |
+| Delete Original After Conversion | boolean | Automatically delete the original file after conversion to save space | `false` |
 
 ### Command Placeholders
 
@@ -77,46 +75,48 @@ The following placeholders are automatically replaced by the addon:
 
 ## Usage Examples
 
-### Example 1: Download Latest Newsround (Default - works out of the box!)
+### Example 1: Download Latest Newsround with Fixed Filename (Perfect for daily automation!)
 
 ```yaml
-search_command: ""
-download_command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --sort=available --reverse --get 1 --audio-only --output=/downloads --force --overwrite"
-enable_ffmpeg: true
-ffmpeg_command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
-media_folder: "/media/newsround"
-auto_delete_original: true
+Download Command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --get 1 --audio-only --output=/downloads --force --overwrite"
+Convert Audio: true
+Conversion Command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
+Output Folder: "/media/newsround"
+Final Filename: "newsround_latest.mp3"
+Delete Original After Conversion: true
 ```
+
+This will always save the file as `newsround_latest.mp3`, so you can play the same filename every day and it will automatically be the latest episode!
 
 ### Example 2: Download Latest Doctor Who Episode (Full Video, No Conversion)
 
 ```yaml
-search_command: ""
-download_command: "get_iplayer 'Doctor Who' --type=tv --sort=available --reverse --get 1 --output=/downloads --force --overwrite"
-enable_ffmpeg: false
-media_folder: "/media/tv_shows"
-auto_delete_original: false
+Download Command: "get_iplayer 'Doctor Who' --type=tv --since 720 --get 1 --output=/downloads --force --overwrite"
+Convert Audio: false
+Output Folder: "/media/tv_shows"
+Final Filename: ""
+Delete Original After Conversion: false
 ```
 
 ### Example 3: Download Latest Today Programme (Radio)
 
 ```yaml
-search_command: ""
-download_command: "get_iplayer 'Today Programme' --type=radio --sort=available --reverse --get 1 --output=/downloads --force --overwrite"
-enable_ffmpeg: true
-ffmpeg_command: "ffmpeg -i {input_file} -acodec mp3 -ab 192k {output_file}"
-media_folder: "/media/radio"
-auto_delete_original: true
+Download Command: "get_iplayer 'Today Programme' --type=radio --since 168 --get 1 --output=/downloads --force --overwrite"
+Convert Audio: true
+Conversion Command: "ffmpeg -i {input_file} -acodec mp3 -ab 192k {output_file}"
+Output Folder: "/media/radio"
+Final Filename: ""
+Delete Original After Conversion: true
 ```
 
 ### Example 4: Download by PID (Programme ID)
 
 ```yaml
-search_command: ""
-download_command: "get_iplayer --pid=b006qykl --output=/downloads --force --overwrite"
-enable_ffmpeg: false
-media_folder: "/media/iplayer"
-auto_delete_original: false
+Download Command: "get_iplayer --pid=b006qykl --output=/downloads --force --overwrite"
+Convert Audio: false
+Output Folder: "/media/iplayer"
+Final Filename: ""
+Delete Original After Conversion: false
 ```
 
 ## get_iplayer Command Reference
