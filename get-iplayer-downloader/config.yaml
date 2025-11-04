@@ -1,5 +1,5 @@
 name: "get_iplayer Downloader"
-version: "1.0.12"
+version: "1.0.13"
 slug: get-iplayer-downloader
 description: "Download BBC iPlayer shows using get_iplayer, optionally convert with ffmpeg, and save to media folder"
 arch:
@@ -12,7 +12,7 @@ init: false
 startup: application
 boot: manual
 options:
-  Download Command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --sort=available --sortreverse --get 1 --audio-only --output=/downloads --force --overwrite"
+  Download Command: "get_iplayer 'Newsround' --channel=CBBC --type=tv --since 168 --sort=available --sortreverse --get --audio-only --output=/downloads --force --overwrite"
   Convert Audio: true
   Conversion Command: "ffmpeg -i {input_file} -acodec mp3 -ab 128k {output_file}"
   Output Folder: "/media/downloads"

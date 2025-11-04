@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.13] - 2025-11-04
+
+### Fixed
+- **Critical fix**: Changed `--get 1` to just `--get`
+- `--get 1` was downloading cache index #1 (Welsh show) instead of first search result
+- Now correctly downloads only the first matching episode from search results
+- No more unwanted extra downloads
+
 ## [1.0.12] - 2025-11-04
 
 ### Fixed
